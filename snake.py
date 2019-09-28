@@ -50,7 +50,6 @@ def snake():
 
 		time.sleep (50.0 / (speed * 100.0));
 		slither()
-		printMap()
 
 def buildMap():
 	temp = []
@@ -59,11 +58,11 @@ def buildMap():
 		row = []
 		for j in range(width + 2):
 			if (i == 0 or i == height + 1):
-				row.append("-")
+				row.append('-')
 			elif(j == 0 or j == width + 1):
-				row.append("|")
+				row.append('|')
 			else:
-				row.append(" ")
+				row.append(' ')
 		temp.append(row)
 
 	global map
@@ -95,25 +94,25 @@ def slither():
 		y = y - 1
 	elif(direction == "down"):
 		y = y + 1
-	# avoid index error by checking if x,y is out of bounds
-	if(x > width + 1 or x < 0):
-		dieSnakeDie()
-	elif(y > height + 1 or y < 0):
-		dieSnakeDie()
+
 	snek.put((x,y))
 
 	# TODO if snake just ate an apple don't delete tail
 	map[tail[1]][tail[0]] = " " #remove tail from map
+	map[y][x] = 'X' # add new head to map
 
-	# TODO would be faster to just add new head to map b/c body is already there
+	printMap()
+	
+	# avoid index error by checking if x,y is out of bounds
+	if(x > width or x <= 0):
+		dieSnakeDie()
+	elif(y > height or y <= 0):
+		dieSnakeDie()
+	
 
-	#add snake to map
-	for i in range(snek.qsize()):
-		t = snek.get()
-		map[t[1]][t[0]] = "X"
-		snek.put(t)
 
 def dieSnakeDie():
+	buildMap()
 	sys.exit()
 
 

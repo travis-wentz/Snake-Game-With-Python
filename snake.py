@@ -4,6 +4,7 @@ import pygame
 import time
 import queue
 import copy
+import sys
 
 speed = 5 #speed the snake moves at
 width = 20 #width of grid
@@ -24,8 +25,9 @@ def snake():
 	global direction
 	global map
 	global snek
-	snek.put((int(x - 2), y))
-	snek.put((int(x - 1), y))
+	snek.put((x - 3, y))
+	snek.put((x - 2, y))
+	snek.put((x - 1, y))
 	snek.put((x, y))
 
 	go = True
@@ -93,18 +95,26 @@ def slither():
 		y = y - 1
 	elif(direction == "down"):
 		y = y + 1
+	# avoid index error by checking if x,y is out of bounds
+	if(x > width + 1 or x < 0):
+		dieSnakeDie()
+	elif(y > height + 1 or y < 0):
+		dieSnakeDie()
 	snek.put((x,y))
 
 	# TODO if snake just ate an apple don't delete tail
 	map[tail[1]][tail[0]] = " " #remove tail from map
 
 	# TODO would be faster to just add new head to map b/c body is already there
-	
+
 	#add snake to map
 	for i in range(snek.qsize()):
 		t = snek.get()
 		map[t[1]][t[0]] = "X"
 		snek.put(t)
+
+def dieSnakeDie():
+	sys.exit()
 
 
 if __name__ == "__main__":

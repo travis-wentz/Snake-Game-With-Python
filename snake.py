@@ -37,13 +37,13 @@ def snake():
 		pygame.event.pump()
 		keys = pygame.key.get_pressed()
 		
-		if (keys[K_RIGHT]):
+		if (keys[K_RIGHT] and direction != "left"):
 			direction = "right"
-		elif (keys[K_LEFT]):
+		elif (keys[K_LEFT] and direction != "right"):
 			direction = "left"
-		elif (keys[K_UP]):
+		elif (keys[K_UP] and direction != "down"):
 			direction = "up"
-		elif (keys[K_DOWN]):
+		elif (keys[K_DOWN]and direction != "up"):
 			direction = "down"
 		elif (keys[K_ESCAPE]):
 			go = False
@@ -109,7 +109,6 @@ def slither():
 	elif(y > height or y <= 0):
 		dieSnakeDie()
 	
-
 
 def dieSnakeDie():
 	buildMap()

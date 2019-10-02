@@ -1,10 +1,11 @@
 from os import system
 from pygame.locals import *
-import pygame
-import time
-import queue
 import copy
+import pygame
+import queue
+import random
 import sys
+import time
 
 speed = 5 #speed the snake moves at
 width = 20 #width of grid
@@ -29,6 +30,7 @@ def snake():
 	snek.put((x - 2, y))
 	snek.put((x - 1, y))
 	snek.put((x, y))
+	addApple()
 
 	go = True
 
@@ -97,22 +99,48 @@ def slither():
 
 	snek.put((x,y))
 
+	# TODO if snake just ate apple and there are no more free spaces
+	#		show win and quit game.
+	# TODO if snake just ate apple, call addApple()
 	# TODO if snake just ate an apple don't delete tail
 	map[tail[1]][tail[0]] = " " #remove tail from map
 	map[y][x] = 'X' # add new head to map
 
 	printMap()
 	
-	# avoid index error by checking if x,y is out of bounds
+	# kill snake if x,y is out of bounds
 	if(x > width or x <= 0):
 		dieSnakeDie()
 	elif(y > height or y <= 0):
 		dieSnakeDie()
+	# TODO kill snake if it runs into itself
 	
 
 def dieSnakeDie():
 	buildMap()
 	sys.exit()
+
+def addApple():
+	freeSpace = randFreeSpace()
+
+	map[freeSpace[1]][freeSpace[0]] = '*'
+
+def randFreeSpace():
+	location = 'X' # will be the location we're tryting to add apple to
+	randX = 0
+	randY = 0
+
+	# TODO check that there is at least 1 empty space to avoid infinite loop
+	while(location != ' '):
+		# create a sudo-random coordinates for the apple
+		# coord = randCoordinates()
+		randX = random.randint(1, width)
+		randY = random.randint(1, height)
+
+		# make sure the coordinates are a free space
+		location = map[randY][randX]
+
+	return ((randX, randY))
 
 
 if __name__ == "__main__":
